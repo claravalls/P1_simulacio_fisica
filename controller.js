@@ -1,10 +1,6 @@
 let xStart;
 let ystart;
 
-function newBall(a) {
-  balls[index++] = new Ball(a);
-}
-
 /*function mousePressed() {
   xStart = mouseX;
   yStart = mouseY;
@@ -15,7 +11,6 @@ function newBall(a) {
 
 function mouseReleased() {
   let a = createVector((xStart - mouseX) / 5, (yStart - mouseY) / 5);
-  newBall(a);
   hintBall = 0;
 }
 */

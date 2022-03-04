@@ -1,8 +1,8 @@
 class Ball {
-  constructor(x, y, color, radius) {
+  constructor(x, y, rgb, radius) {
     this.id = index;
     this.position = createVector(x, y);
-    this.color = color;
+    this.color = color(rgb.r, rgb.g, rgb.b);
     this.velocity = createVector(0, 0);
     this.acceleration = createVector(0, 0);
     this.mass = 1;
@@ -11,9 +11,15 @@ class Ball {
   }
 
   render() {
+    this.checkCollide();
+    this.update();
+
     noStroke;
-    fill(color(this.color.r, this.color.g, this.color.b));
+    fill(color(this.color));
     ellipse(this.position.x, this.position.y, this.size);
+
+    this.checkEdges();
+    this.addFriction(0.1);
   }
 
   update() {
@@ -27,25 +33,27 @@ class Ball {
     this.acceleration.add(f);
   }
   checkEdges() {
-    if (this.position.y > height) {
+    if (this.position.y > borders[3]) {
       this.velocity.y *= -1;
-      this.position.y = height;
+      this.position.y = borders[3];
     }
-    if (this.position.y < 0) {
+    if (this.position.y < borders[1]) {
       this.velocity.y *= -1;
-      this.position.y = 0;
+      this.position.y = borders[1];
     }
-    if (this.position.x >= width) {
+    if (this.position.x >= borders[2]) {
       this.velocity.x *= -1;
-      this.position.x = width;
+      this.position.x = borders[2];
     }
-    if (this.position.x < 0) {
+    if (this.position.x < borders[0]) {
       this.velocity.x *= -1;
-      this.position.x = 0;
+      this.position.x = borders[0];
     }
   }
 
-  checkCollide() {
+  checkCollide(balls) {
+    balls = concat(yel_balls, blue_balls);
+
     balls.forEach((other) => {
       if (other.id != this.id) {
         let distance = p5.Vector.sub(this.position, other.position);
