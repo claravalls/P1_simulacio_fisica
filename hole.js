@@ -1,6 +1,6 @@
 class Hole {
   constructor(id, position) {
-    this.size = 25;
+    this.size = 30;
     this.position = position;
     this.id = id;
   }
@@ -12,7 +12,8 @@ class Hole {
   }
 
   isInside(ball_position) {
-    if (ball_position.sub(this.position) == 0) {
+    let aux_vec = ball_position.copy();
+    if (aux_vec.sub(this.position) == 0) {
       return true;
     } else {
       return false;

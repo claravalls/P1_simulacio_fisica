@@ -3,7 +3,7 @@ let blue_balls = [];
 let data = {};
 
 let index = 0;
-let frame = 30;
+let frame = 35;
 let borders = [];
 
 let player1;
