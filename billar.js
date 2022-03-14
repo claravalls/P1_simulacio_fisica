@@ -38,5 +38,5 @@ function draw() {
 }
 
 function preload() {
-  loadJSON("assets/aux_init.json", gotData);
+  loadJSON("assets/init.json", gotData);
 }

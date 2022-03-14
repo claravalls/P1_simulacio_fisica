@@ -1,3 +1,5 @@
+let MAX_SPEED = 20;
+
 class Ball {
   constructor(x, y, rgb, radius) {
     this.id = index++;
@@ -27,7 +29,7 @@ class Ball {
       element.isInside(this.position);
     });
     this.checkEdges();
-    this.addFriction(0.2);
+    this.addFriction(0.1);
 
     if (this.iAmWhite) {
       if (showStick) {
@@ -46,6 +48,9 @@ class Ball {
   }
 
   addForce(force) {
+    if (force.mag() > MAX_SPEED) {
+      force.setMag(MAX_SPEED);
+    }
     var f = force.div(this.mass);
     this.acceleration.add(f);
   }
@@ -85,10 +90,10 @@ class Ball {
           let currentVelocity = this.velocity.copy();
           let otherCurrentVelocity = other.velocity.copy();
 
-          this.addForce(currentVelocity.mult(-1));
+          this.addForce(currentVelocity.mult(-0.7));
           this.addForce(otherCurrentVelocity.mult(this.collisionLoss));
 
-          other.addForce(otherCurrentVelocity.mult(-1));
+          other.addForce(otherCurrentVelocity.mult(-0.7));
           other.addForce(otherCurrentVelocity.mult(this.collisionLoss));
         }
       }
@@ -127,11 +132,7 @@ class Ball {
     let vy = (this.position.y - mousePos.y) / 5;
     let direction = createVector(vx, vy);
 
-    let magnitud = sqrt(pow(vx, 2) + pow(vy, 2)) / 10;
-    direction.mult(magnitud);
-
     this.addForce(direction);
-
     shotWhite = false;
   }
 }

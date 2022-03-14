@@ -20,11 +20,7 @@ class Line {
 }
 
 function gotData(data) {
-  console.log(blue_balls.length);
-
-  if (blue_balls.length == 0) {
-    console.log(blue_balls);
-
+  if (blue_balls.length == 0 && yel_balls.length == 0 && !whiteBall) {
     console.log("Getting data");
     jsonData = data;
     let w_ball = data[0];
