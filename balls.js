@@ -23,9 +23,7 @@ class Ball {
     fill(color(this.color));
     ellipse(this.position.x, this.position.y, this.size);
 
-    holes.forEach((element) => {
-      element.isInside(this.position);
-    });
+    this.checkHoles();
     this.checkEdges();
     this.addFriction(0.1);
 
@@ -134,6 +132,19 @@ class Ball {
     this.addForce(direction);
 
     shotWhite = false;
+  }
+
+
+  checkHoles(){
+    holes.forEach((other) => {
+      let distance = p5.Vector.sub(this.position, other.position);
+      let minDistance = other.size / 2;
+      if (distance.mag() < minDistance) {
+        console.log("BALL IN HOLE");
+        //this.dissappear;
+        this.color = color(150,150,150);
+      }
+    });   
   }
 
 }
