@@ -25,13 +25,13 @@ class Ball {
 
     this.checkHoles();
     this.checkEdges();
-    this.addFriction(0.1);
+    this.addFriction(0.2);
 
-    if(this.iAmWhite){
-      if(showStick){
+    if (this.iAmWhite) {
+      if (showStick) {
         this.drawStick();
       }
-      if(shotWhite){
+      if (shotWhite) {
         this.shotWhiteBall();
       }
     }
@@ -48,21 +48,21 @@ class Ball {
     this.acceleration.add(f);
   }
   checkEdges() {
-    if (this.position.y > borders[3]) {
+    if (this.position.y > borders[3] - this.size / 2) {
       this.velocity.y *= -0.9;
-      this.position.y = borders[3];
+      this.position.y = borders[3] - this.size / 2;
     }
-    if (this.position.y < borders[1]) {
+    if (this.position.y < borders[1] + this.size / 2) {
       this.velocity.y *= -0.9;
-      this.position.y = borders[1];
+      this.position.y = borders[1] + this.size / 2;
     }
-    if (this.position.x >= borders[2]) {
+    if (this.position.x >= borders[2] - this.size / 2) {
       this.velocity.x *= -0.9;
-      this.position.x = borders[2];
+      this.position.x = borders[2] - this.size / 2;
     }
-    if (this.position.x < borders[0]) {
+    if (this.position.x < borders[0] + this.size / 2) {
       this.velocity.x *= -0.9;
-      this.position.x = borders[0];
+      this.position.x = borders[0] + this.size / 2;
     }
   }
 
@@ -100,40 +100,38 @@ class Ball {
     this.addForce(friction);
   }
 
-
-  drawStick(){
+  drawStick() {
     //palo mejorable
     let stickLength = 200;
     let whiteStickLength = 30;
 
     push();
-      //translate(center.x, center.y);
-      //Falta aplicar el angulo para tener el palo pues eso angulado xd
-      fill(color(140,20,20));
-      rect(mouseX - stickLength, mouseY-5, stickLength, 10);    
-      fill(color(255,255,255));
-      rect(mouseX - whiteStickLength, mouseY-5, whiteStickLength, 10);
+    //translate(center.x, center.y);
+    //Falta aplicar el angulo para tener el palo pues eso angulado xd
+    fill(color(140, 20, 20));
+    rect(mouseX - stickLength, mouseY - 5, stickLength, 10);
+    fill(color(255, 255, 255));
+    rect(mouseX - whiteStickLength, mouseY - 5, whiteStickLength, 10);
 
-      //hint line
-      stroke(255,255,255);
-      line(this.position.x, this.position.y, mouseX, mouseY);
+    //hint line
+    stroke(255, 255, 255);
+    line(this.position.x, this.position.y, mouseX, mouseY);
     pop();
   }
 
-  shotWhiteBall(){
+  shotWhiteBall() {
     let mousePos = createVector(mouseX, mouseY);
-    let vx = (this.position.x-mousePos.x)/5;
-    let vy = (this.position.y-mousePos.y)/5;
-    let direction = createVector(vx,vy);
+    let vx = (this.position.x - mousePos.x) / 5;
+    let vy = (this.position.y - mousePos.y) / 5;
+    let direction = createVector(vx, vy);
 
-    let magnitud = sqrt(pow(vx,2)+pow(vy,2))/10;
+    let magnitud = sqrt(pow(vx, 2) + pow(vy, 2)) / 10;
     direction.mult(magnitud);
 
     this.addForce(direction);
 
     shotWhite = false;
   }
-
 
   checkHoles(){
     holes.forEach((other) => {
@@ -146,5 +144,4 @@ class Ball {
       }
     });   
   }
-
 }

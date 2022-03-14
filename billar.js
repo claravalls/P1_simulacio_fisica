@@ -19,7 +19,7 @@ function setup() {
   preload();
   player1 = new Player(1);
   player2 = new Player(2);
-  borders.push(frame, frame, width - 2 * frame, height - 2 * frame);
+  borders.push(frame, frame, width - frame, height - frame);
 }
 
 function draw() {
@@ -38,6 +38,5 @@ function draw() {
 }
 
 function preload() {
-  //loadJSON("assets/init.json", gotData);
-  loadJSON("assets/init_holes_aux.json", gotData);
+  loadJSON("assets/aux_init.json", gotData);
 }
