@@ -1,19 +1,9 @@
 let xStart;
 let ystart;
 
-/*function mousePressed() {
-  xStart = mouseX;
-  yStart = mouseY;
-  hintBall = new Ball();
-  hintBall.color = color(255, 255, 255);
-  hintLine = new Line();
-}
+let showStick;
+let shotWhite;
 
-function mouseReleased() {
-  let a = createVector((xStart - mouseX) / 5, (yStart - mouseY) / 5);
-  hintBall = 0;
-}
-*/
 class Line {
   constructor() {
     this.origin = createVector(mouseX, mouseY);
@@ -82,4 +72,41 @@ function createTable() {
   fill(117, 217, 117);
   noStroke();
   rect(borders[0], borders[1], borders[2], borders[3]);
+}
+
+
+function mousePressed(){
+  shotWhite = false;
+  xStart = mouseX;
+  yStart = mouseY;
+  
+  console.log
+  if(checkWhiteClick()){
+    showStick = true;
+  }else{
+    showStick = false;
+  }
+
+  lastMousePressed = false;
+}
+
+function mouseReleased(){
+  showStick = false;
+  shotWhite = true;
+}
+function mouseDragged() {
+  showStick = true;
+}
+
+
+function checkWhiteClick(){
+  if(mouseX > (whiteBall.position.x - whiteBall.size) && 
+  mouseY > (whiteBall.position.y - whiteBall.size) && 
+  mouseX < (whiteBall.position.x + whiteBall.size) && 
+  mouseY < (whiteBall.position.y + whiteBall.size)){
+    return true;
+  }else{
+    return false;
+  }
+  
 }

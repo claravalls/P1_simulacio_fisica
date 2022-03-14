@@ -28,6 +28,15 @@ class Ball {
     });
     this.checkEdges();
     this.addFriction(0.1);
+
+    if(this.iAmWhite){
+      if(showStick){
+        this.drawStick();
+      }
+      if(shotWhite){
+        this.shotWhiteBall();
+      }
+    }
   }
 
   update() {
@@ -92,4 +101,39 @@ class Ball {
     friction.setMag(c);
     this.addForce(friction);
   }
+
+
+  drawStick(){
+    //palo mejorable
+    let stickLength = 200;
+    let whiteStickLength = 30;
+
+    push();
+      //translate(center.x, center.y);
+      //Falta aplicar el angulo para tener el palo pues eso angulado xd
+      fill(color(140,20,20));
+      rect(mouseX - stickLength, mouseY-5, stickLength, 10);    
+      fill(color(255,255,255));
+      rect(mouseX - whiteStickLength, mouseY-5, whiteStickLength, 10);
+
+      //hint line
+      stroke(255,255,255);
+      line(this.position.x, this.position.y, mouseX, mouseY);
+    pop();
+  }
+
+  shotWhiteBall(){
+    let mousePos = createVector(mouseX, mouseY);
+    let vx = (this.position.x-mousePos.x)/5;
+    let vy = (this.position.y-mousePos.y)/5;
+    let direction = createVector(vx,vy);
+
+    let magnitud = sqrt(pow(vx,2)+pow(vy,2))/10;
+    direction.mult(magnitud);
+
+    this.addForce(direction);
+
+    shotWhite = false;
+  }
+
 }
