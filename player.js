@@ -8,6 +8,12 @@ class Player {
 
   setColor(color) {
     this.color = color;
+    console.log(this.color == "Y");
+    if (this.color == "Y") {
+      return "B";
+    } else {
+      return "Y";
+    }
   }
 
   myTurn() {

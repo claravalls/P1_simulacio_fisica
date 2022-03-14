@@ -1,16 +1,21 @@
-let MAX_SPEED = 20;
+let MAX_SPEED = 15;
 
 class Ball {
-  constructor(x, y, rgb, radius) {
+  constructor(x, y, color, radius, type) {
     this.id = index++;
+    this.type = type;
     this.position = createVector(x, y);
-    this.color = color(rgb.r, rgb.g, rgb.b);
+    this.color = color;
     this.velocity = createVector(0, 0);
     this.acceleration = createVector(0, 0);
     this.mass = 1;
     this.size = radius;
-    this.collisionLoss = 1;
-    this.iAmWhite = rgb.r == 255 && rgb.g == 255 && rgb.b == 255;
+    this.collisionLoss = 0.9;
+    //this.iAmWhite = rgb.r == 255 && rgb.g == 255 && rgb.b == 255;
+  }
+
+  iAmWhite() {
+    return this.type == "W";
   }
 
   render() {
@@ -25,11 +30,10 @@ class Ball {
     fill(color(this.color));
     ellipse(this.position.x, this.position.y, this.size);
 
-    this.checkHoles();
     this.checkEdges();
     this.addFriction(0.1);
 
-    if (this.iAmWhite) {
+    if (this.iAmWhite()) {
       if (showStick) {
         this.drawStick();
       }
@@ -37,6 +41,7 @@ class Ball {
         this.shotWhiteBall();
       }
     }
+    this.checkHoles();
   }
 
   update() {
@@ -88,10 +93,10 @@ class Ball {
           let currentVelocity = this.velocity.copy();
           let otherCurrentVelocity = other.velocity.copy();
 
-          this.addForce(currentVelocity.mult(-0.7));
+          this.addForce(currentVelocity.mult(-1));
           this.addForce(otherCurrentVelocity.mult(this.collisionLoss));
 
-          other.addForce(otherCurrentVelocity.mult(-0.7));
+          other.addForce(otherCurrentVelocity.mult(-1));
           other.addForce(otherCurrentVelocity.mult(this.collisionLoss));
         }
       }
@@ -134,15 +139,60 @@ class Ball {
     shotWhite = false;
   }
 
-  checkHoles(){
+  copy() {
+    return new Ball(
+      this.position.x,
+      this.position.y,
+      this.color,
+      this.size,
+      this.type
+    );
+  }
+
+  checkHoles() {
     holes.forEach((other) => {
       let distance = p5.Vector.sub(this.position, other.position);
-      let minDistance = other.size / 2;
+      let minDistance = other.size;
       if (distance.mag() < minDistance) {
-        console.log("BALL IN HOLE");
+        if (firstBall && this.type != "W" && this.type != "K  ") {
+          if (player1.turn > 0) {
+            let otherColor = player1.setColor(this.type);
+            player2.setColor(otherColor);
+            firstBall = false;
+          } else {
+            let otherColor = player2.setColor(this.type);
+            player1.setColor(otherColor);
+          }
+          firstBall = false;
+        }
+
+        switch (this.type) {
+          case "Y":
+            index = yel_balls.indexOf(this);
+            console.log(index + ": Yel deleted with id " + this.id);
+            yel_balls.splice(index, 1);
+            break;
+          case "B":
+            index = blue_balls.indexOf(this);
+            console.log(index + ": Blue deleted with id " + this.id);
+            blue_balls.splice(index, 1);
+            break;
+          case "K":
+            this.color.setAlpha(0);
+            //blackBallIn();
+            break;
+          case "W":
+            this.color.setAlpha(0);
+            whiteBallIn();
+            break;
+
+          default:
+            break;
+        }
         //this.dissappear;
-        this.color = color(150,150,150);
+
+        //this.color = color(150, 150, 150);
       }
-    });   
+    });
   }
 }

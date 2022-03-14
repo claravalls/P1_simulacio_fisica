@@ -27,16 +27,22 @@ function gotData(data) {
     whiteBall = new Ball(
       w_ball["x"],
       w_ball["y"],
-      w_ball["color"],
-      w_ball["radius"]
+      color(w_ball["color"].r, w_ball["color"].g, w_ball["color"].b),
+      w_ball["radius"],
+      "W"
     );
 
     let black_ball = data[1];
     blackBall = new Ball(
       black_ball["x"],
       black_ball["y"],
-      black_ball["color"],
-      black_ball["radius"]
+      color(
+        black_ball["color"].r,
+        black_ball["color"].g,
+        black_ball["color"].b
+      ),
+      black_ball["radius"],
+      "K"
     );
 
     elements = data[2];
@@ -45,8 +51,9 @@ function gotData(data) {
       let b = new Ball(
         element["x"],
         element["y"],
-        element["color"],
-        element["radius"]
+        color(element["color"].r, element["color"].g, element["color"].b),
+        element["radius"],
+        "Y"
       );
       yel_balls.push(b);
     }
@@ -56,8 +63,9 @@ function gotData(data) {
       let b = new Ball(
         element["x"],
         element["y"],
-        element["color"],
-        element["radius"]
+        color(element["color"].r, element["color"].g, element["color"].b),
+        element["radius"],
+        "B"
       );
       blue_balls.push(b);
     }
@@ -67,6 +75,8 @@ function gotData(data) {
       let h = new Hole(element["id"], createVector(element["x"], element["y"]));
       holes.push(h);
     }
+    aux_blackBall = blackBall.copy();
+    aux_whiteBall = whiteBall.copy();
   }
 }
 
@@ -111,4 +121,11 @@ function checkWhiteClick() {
   } else {
     return false;
   }
+}
+
+function whiteBallIn() {
+  console.log("White ball in!");
+  aux_whiteBall.color.setAlpha(255);
+  whiteBall = aux_whiteBall.copy();
+  clear();
 }
