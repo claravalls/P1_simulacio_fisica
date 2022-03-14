@@ -27,10 +27,10 @@ function draw() {
   whiteBall.render();
   blackBall.render();
   for (i = 0; i < yel_balls.length; i++) {
-    yel_balls[i].render();
+    yel_balls[i].render();    
   }
   for (i = 0; i < blue_balls.length; i++) {
-    blue_balls[i].render();
+    blue_balls[i].render();    
   }
   for (i = 0; i < holes.length; i++) {
     holes[i].render();
