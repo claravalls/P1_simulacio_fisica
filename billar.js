@@ -4,6 +4,7 @@ let data = {};
 
 let index = 0;
 let frame = 35;
+let tableHeight = 360;
 let borders = [];
 
 let player1;
@@ -15,15 +16,16 @@ let blackBall;
 let holes = [];
 
 function setup() {
-  createCanvas(600, 360);
+  createCanvas(600, 460);
   preload();
-  player1 = new Player(1);
-  player2 = new Player(2);
-  borders.push(frame, frame, width - frame, height - frame);
+  //player1 = new Player(1);
+  //player2 = new Player(2);
+  borders.push(frame, frame, width - frame, tableHeight - frame);
 }
 
 function draw() {
   createTable();
+  showPlayers();
   whiteBall.render();
   blackBall.render();
   for (i = 0; i < yel_balls.length; i++) {
@@ -38,5 +40,6 @@ function draw() {
 }
 
 function preload() {
-  loadJSON("assets/init.json", gotData);
+  loadJSON("assets/init_holes_aux.json", gotData);
+  loadJSON("assets/players.json", gotDataPlayers);
 }

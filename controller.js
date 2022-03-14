@@ -70,6 +70,29 @@ function gotData(data) {
   }
 }
 
+function gotDataPlayers(data) {
+
+  let element1 = data[0];
+  player1 = new Player(
+    element1["x"],
+    element1["y"],
+    element1["color"]
+  );
+
+  let element2 = data[1];
+  player2 = new Player(
+    element2["x"],
+    element2["y"],
+    element2["color"]
+  );
+}
+
+function showPlayers(){
+  player1.showShape();
+  player2.showShape();
+}
+
+
 function createTable() {
   background(10, 130, 90);
   fill(117, 217, 117);

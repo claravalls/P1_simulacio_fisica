@@ -137,7 +137,7 @@ class Ball {
   checkHoles(){
     holes.forEach((other) => {
       let distance = p5.Vector.sub(this.position, other.position);
-      let minDistance = other.size / 2;
+      let minDistance = other.size;
       if (distance.mag() < minDistance) {
         console.log("BALL IN HOLE");
         //this.dissappear;
