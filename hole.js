@@ -6,7 +6,7 @@ class Hole {
   }
 
   render() {
-    noStroke;
+    noStroke();
     fill(color(0, 0, 0));
     ellipse(this.position.x, this.position.y, this.size);
   }

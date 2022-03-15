@@ -1,4 +1,5 @@
-let MAX_SPEED = 15;
+const MAX_SPEED = 15;
+const MIN_SPEED = 0.09;
 
 class Ball {
   constructor(x, y, color, radius, type) {
@@ -11,7 +12,6 @@ class Ball {
     this.mass = 1;
     this.size = radius;
     this.collisionLoss = 0.9;
-    //this.iAmWhite = rgb.r == 255 && rgb.g == 255 && rgb.b == 255;
   }
 
   iAmWhite() {
@@ -26,12 +26,12 @@ class Ball {
 
     this.update();
 
-    noStroke;
+    noStroke();
     fill(color(this.color));
     ellipse(this.position.x, this.position.y, this.size);
 
     this.checkEdges();
-    this.addFriction(0.1);
+    this.addFriction(0.2);
 
     if (this.iAmWhite()) {
       if (showStick) {
@@ -46,6 +46,9 @@ class Ball {
 
   update() {
     this.velocity.add(this.acceleration);
+    if (this.velocity.mag() < MIN_SPEED) {
+      this.velocity.mult(0);
+    }
     this.position.add(this.velocity);
     this.acceleration.mult(0);
   }
@@ -118,6 +121,7 @@ class Ball {
     push();
     //translate(center.x, center.y);
     //Falta aplicar el angulo para tener el palo pues eso angulado xd
+    noStroke();
     fill(color(140, 20, 20));
     rect(mouseX - stickLength, mouseY - 5, stickLength, 10);
     fill(color(255, 255, 255));

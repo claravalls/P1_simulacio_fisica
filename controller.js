@@ -81,54 +81,52 @@ function gotData(data) {
 }
 
 function gotDataPlayers(data) {
-
   let element1 = data[0];
-  player1 = new Player(
-    element1["x"],
-    element1["y"],
-    element1["color"]
-  );
+  player1 = new Player(1, element1["x"], element1["y"], element1["color"]);
+  player1.myTurn();
 
   let element2 = data[1];
-  player2 = new Player(
-    element2["x"],
-    element2["y"],
-    element2["color"]
-  );
+  player2 = new Player(2, element2["x"], element2["y"], element2["color"]);
 }
 
-function showPlayers(){
+function showPlayers() {
   player1.showShape();
   player2.showShape();
 }
 
-
 function createTable() {
-  background(10, 130, 90);
-  fill(117, 217, 117);
   noStroke();
+  fill(10, 130, 90);
+  rect(0, 0, width, height - PLAYERS_HEIGHT);
+  //background(10, 130, 90);
+  fill(117, 217, 117);
   rect(borders[0], borders[1], borders[2] - frame, borders[3] - frame);
 }
 
 function mousePressed() {
-  shotWhite = false;
-  xStart = mouseX;
-  yStart = mouseY;
+  if (!checkBallsMoving()) {
+    shotWhite = false;
+    xStart = mouseX;
+    yStart = mouseY;
 
-  console.log;
-  if (checkWhiteClick()) {
-    showStick = true;
-  } else {
-    showStick = false;
+    if (checkWhiteClick()) {
+      showStick = true;
+    } else {
+      showStick = false;
+    }
+
+    lastMousePressed = false;
   }
-
-  lastMousePressed = false;
 }
 
 function mouseReleased() {
   showStick = false;
   shotWhite = true;
+  while (checkBallsMoving()) {}
+  player1.changeTurn();
+  player2.changeTurn();
 }
+
 function mouseDragged() {
   showStick = true;
 }
@@ -144,6 +142,23 @@ function checkWhiteClick() {
   } else {
     return false;
   }
+}
+
+function checkBallsMoving() {
+  yel_balls.forEach((ball) => {
+    if (ball.velocity.mag() != 0) {
+      return true;
+    }
+  });
+  blue_balls.forEach((ball) => {
+    if (ball.velocity.mag() != 0) {
+      return true;
+    }
+  });
+  if (whiteBall.velocity.mag() != 0 || blackBall.velocity.mag() != 0) {
+    return true;
+  }
+  return false;
 }
 
 function whiteBallIn() {

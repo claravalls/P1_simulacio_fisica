@@ -18,14 +18,12 @@ let aux_whiteBall;
 let aux_blackBall;
 
 let holes = [];
+const PLAYERS_HEIGHT = 150;
 
 function setup() {
-  createCanvas(600, 460);
+  createCanvas(600, 360 + PLAYERS_HEIGHT);
   preload();
-  player1 = new Player(1);
-  player2 = new Player(2);
-  player1.myTurn();
-  borders.push(frame, frame, width - frame, height - frame);
+  borders.push(frame, frame, width - frame, height - frame - PLAYERS_HEIGHT);
   firstBall = true;
 }
 
@@ -46,6 +44,6 @@ function draw() {
 }
 
 function preload() {
-  loadJSON("assets/init_holes_aux.json", gotData);
+  loadJSON("assets/init.json", gotData);
   loadJSON("assets/players.json", gotDataPlayers);
 }
