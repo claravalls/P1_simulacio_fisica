@@ -122,9 +122,6 @@ function mousePressed() {
 function mouseReleased() {
   showStick = false;
   shotWhite = true;
-  while (checkBallsMoving()) {}
-  player1.changeTurn();
-  player2.changeTurn();
 }
 
 function mouseDragged() {

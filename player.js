@@ -26,13 +26,28 @@ class Player {
     this.turn--;
   }
 
-  changeTurn() {
-    if (this.turn > 0) {
-      this.endTurn();
-    } else {
-      console.log("Player " + this.id + " turn");
+  changeTurn(otherPlayer) {
+    switch (this.turn) {
+      case 0:
+        if (otherPlayer.turn > 1) {
+          otherPlayer.endTurn();
+          console.log("Player " + otherPlayer.id + " turn");
+        } else {
+          this.myTurn();
+          console.log("Player " + this.id + " turn");
+          otherPlayer.endTurn();
+        }
+        break;
+      case 1:
+        this.endTurn();
+        otherPlayer.myTurn();
+        console.log("Player " + otherPlayer.id + " turn");
 
-      this.myTurn();
+        break;
+
+      default:
+        this.endTurn();
+        console.log("Player " + this.id + " turn");
     }
   }
 

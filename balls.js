@@ -18,17 +18,14 @@ class Ball {
     return this.type == "W";
   }
 
-  render() {
+  renderMovement() {
     this.checkCollide(yel_balls);
     this.checkCollide(blue_balls);
     this.checkCollide([whiteBall]);
     this.checkCollide([blackBall]);
 
     this.update();
-
-    noStroke();
-    fill(color(this.color));
-    ellipse(this.position.x, this.position.y, this.size);
+    this.draw();
 
     this.checkEdges();
     this.addFriction(0.2);
@@ -41,7 +38,30 @@ class Ball {
         this.shotWhiteBall();
       }
     }
+
     this.checkHoles();
+  }
+
+  renderStop() {
+    this.update();
+    this.draw();
+
+    this.addFriction(0.2);
+
+    if (this.iAmWhite()) {
+      if (showStick) {
+        this.drawStick();
+      }
+      if (shotWhite) {
+        this.shotWhiteBall();
+      }
+    }
+  }
+
+  draw() {
+    noStroke();
+    fill(color(this.color));
+    ellipse(this.position.x, this.position.y, this.size);
   }
 
   update() {
