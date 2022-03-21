@@ -1,3 +1,5 @@
+const OPPOSITE_HOLES = [6, 5, 4, 3, 2, 1];
+
 class Hole {
   constructor(id, position) {
     this.size = 30;

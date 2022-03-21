@@ -11,18 +11,38 @@ class Ball {
     this.acceleration = createVector(0, 0);
     this.mass = 1;
     this.size = radius;
-    this.collisionLoss = 0.9;
+    this.collisionLoss = 0.95;
   }
 
   iAmWhite() {
     return this.type == "W";
   }
 
-  renderMovement() {
-    this.checkCollide(yel_balls);
-    this.checkCollide(blue_balls);
-    this.checkCollide([whiteBall]);
-    this.checkCollide([blackBall]);
+  renderMovement(first) {
+    let c = this.checkCollide(yel_balls);
+
+    if (c != "" && first) {
+      first = false;
+      firstCBall = "Y";
+    }
+    c = this.checkCollide(blue_balls);
+
+    if (c != "" && first) {
+      first = false;
+      firstCBall = "B";
+    }
+    c = this.checkCollide([whiteBall]);
+
+    if (c != "" && first) {
+      first = false;
+      firstCBall = c;
+    }
+    c = this.checkCollide([blackBall]);
+
+    if (c != "" && first) {
+      first = false;
+      firstCBall = "K";
+    }
 
     this.update();
     this.draw();
@@ -40,6 +60,7 @@ class Ball {
     }
 
     this.checkHoles();
+    return first;
   }
 
   renderStop() {
@@ -82,29 +103,31 @@ class Ball {
   }
   checkEdges() {
     if (this.position.y > borders[3] - this.size / 2) {
-      this.velocity.y *= -0.9;
+      this.velocity.y *= -1;
       this.position.y = borders[3] - this.size / 2;
     }
     if (this.position.y < borders[1] + this.size / 2) {
-      this.velocity.y *= -0.9;
+      this.velocity.y *= -1;
       this.position.y = borders[1] + this.size / 2;
     }
     if (this.position.x >= borders[2] - this.size / 2) {
-      this.velocity.x *= -0.9;
+      this.velocity.x *= -1;
       this.position.x = borders[2] - this.size / 2;
     }
     if (this.position.x < borders[0] + this.size / 2) {
-      this.velocity.x *= -0.9;
+      this.velocity.x *= -1;
       this.position.x = borders[0] + this.size / 2;
     }
   }
 
   checkCollide(balls) {
+    let collide = "None";
     balls.forEach((other) => {
       if (other.id != this.id) {
         let distance = p5.Vector.sub(this.position, other.position);
         let minDistance = (this.size + other.size) / 2;
         if (distance.mag() < minDistance) {
+          collide = this.type;
           let distanceVect = p5.Vector.sub(other.position, this.position);
           let distanceCorrection = (minDistance - distance.mag()) / 2.0;
           let d = distanceVect.copy();
@@ -124,6 +147,7 @@ class Ball {
         }
       }
     });
+    return collide;
   }
 
   addFriction(c) {
@@ -178,7 +202,7 @@ class Ball {
       let distance = p5.Vector.sub(this.position, other.position);
       let minDistance = other.size;
       if (distance.mag() < minDistance) {
-        if (firstBall && this.type != "W" && this.type != "K  ") {
+        if (firstBall && this.type != "W" && this.type != "K") {
           if (player1.turn > 0) {
             let otherColor = player1.setColor(this.type);
             player2.setColor(otherColor);
@@ -190,32 +214,63 @@ class Ball {
           firstBall = false;
         }
 
+        let otherPlayer;
+        if (player2.turn != 0) {
+          otherPlayer = player1;
+        } else {
+          otherPlayer = player2;
+        }
+
+        let color_player;
+        if (player2.type == this.type) {
+          color_player = player2;
+        } else {
+          color_player = player1;
+        }
+
         switch (this.type) {
           case "Y":
             index = yel_balls.indexOf(this);
-            console.log(index + ": Yel deleted with id " + this.id);
             yel_balls.splice(index, 1);
+
+            color_player.balls--;
+            console.log(
+              color_player.balls +
+                " balls remaining for player " +
+                color_player.id
+            );
+
+            if (color_player.balls == 0) {
+              color_player.lastHole = other.id;
+            }
             break;
+
           case "B":
             index = blue_balls.indexOf(this);
-            console.log(index + ": Blue deleted with id " + this.id);
             blue_balls.splice(index, 1);
+
+            color_player.balls--;
+            console.log(
+              color_player.balls +
+                " balls remaining for player " +
+                color_player.id
+            );
+
+            if (color_player.balls == 0) {
+              color_player.lastHole = other.id;
+            }
             break;
           case "K":
             this.color.setAlpha(0);
-            //blackBallIn();
+            blackBallIn(other.id);
             break;
+
           case "W":
             this.color.setAlpha(0);
             whiteBallIn();
-            break;
-
-          default:
+            otherPlayer.doubleTurn();
             break;
         }
-        //this.dissappear;
-
-        //this.color = color(150, 150, 150);
       }
     });
   }

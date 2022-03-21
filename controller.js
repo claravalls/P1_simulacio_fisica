@@ -164,3 +164,14 @@ function whiteBallIn() {
   whiteBall = aux_whiteBall.copy();
   clear();
 }
+
+function blackBallIn(hole) {
+  let current_player = player1;
+  if (player2.turn > 0) {
+    current_player = player2;
+  }
+  if (current_player.balls > 0) {
+    console.log("Player " + current_player.id + " loses");
+  } else {
+  }
+}

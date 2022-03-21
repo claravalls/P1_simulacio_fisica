@@ -7,6 +7,7 @@ class Player {
     this.turn = 0;
     this.shape = 1;
     this.type = "";
+    this.lastHole = 0;
   }
 
   setColor(type) {
@@ -19,35 +20,107 @@ class Player {
   }
 
   myTurn() {
-    this.turn++;
+    if (this.turn < 2) {
+      this.turn++;
+    }
   }
 
   endTurn() {
     this.turn--;
   }
 
+  doubleTurn() {
+    this.turn = -1;
+  }
+
   changeTurn(otherPlayer) {
     switch (this.turn) {
+      case -1:
+        this.turn = 2;
+        otherPlayer.turn = 0;
+        console.log("Player " + this.id + " turn");
+        break;
+
       case 0:
-        if (otherPlayer.turn > 1) {
-          otherPlayer.endTurn();
-          console.log("Player " + otherPlayer.id + " turn");
-        } else {
-          this.myTurn();
-          console.log("Player " + this.id + " turn");
-          otherPlayer.endTurn();
+        switch (otherPlayer.turn) {
+          case 1:
+            this.myTurn();
+            otherPlayer.endTurn();
+            console.log("Player " + this.id + " turn");
+            break;
+
+          case 2:
+            otherPlayer.endTurn();
+            console.log("Player " + otherPlayer.id + " turn");
+            break;
+
+          default:
+            console.log(
+              "Invalid turns: player" +
+                this.id +
+                " = " +
+                this.turn +
+                " and player" +
+                otherPlayer.id +
+                " = " +
+                otherPlayer.turn
+            );
+            break;
         }
         break;
       case 1:
-        this.endTurn();
-        otherPlayer.myTurn();
-        console.log("Player " + otherPlayer.id + " turn");
+        switch (otherPlayer.turn) {
+          case 0:
+            this.endTurn();
+            otherPlayer.myTurn();
+            console.log("Player " + otherPlayer.id + " turn");
+            break;
 
+          case -1:
+            otherPlayer.turn = 2;
+            this.turn = 0;
+            console.log("Player " + otherPlayer.id + " turn");
+            break;
+          default:
+            console.log(
+              "Invalid turns: player" +
+                this.id +
+                " = " +
+                this.turn +
+                " and player" +
+                otherPlayer.id +
+                " = " +
+                otherPlayer.turn
+            );
+            break;
+        }
         break;
 
-      default:
-        this.endTurn();
-        console.log("Player " + this.id + " turn");
+      case 2:
+        switch (otherPlayer.turn) {
+          case 0:
+            this.endTurn();
+            console.log("Player " + this.id + " turn");
+            break;
+          case -1:
+            this.turn = 0;
+            otherPlayer.turn = 2;
+            console.log("Player " + otherPlayer.id + " turn");
+            break;
+
+          default:
+            console.log(
+              "Invalid turns: player" +
+                this.id +
+                " = " +
+                this.turn +
+                " and player" +
+                otherPlayer.id +
+                " = " +
+                otherPlayer.turn
+            );
+            break;
+        }
     }
   }
 
