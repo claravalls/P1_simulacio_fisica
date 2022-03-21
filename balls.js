@@ -19,30 +19,16 @@ class Ball {
   }
 
   renderMovement(first) {
-    let c = this.checkCollide(yel_balls);
+    this.checkCollide(yel_balls);
+    this.checkCollide(blue_balls);
 
-    if (c != "" && first) {
-      first = false;
-      firstCBall = "Y";
-    }
-    c = this.checkCollide(blue_balls);
+    let c = this.checkCollide([whiteBall]);
 
-    if (c != "" && first) {
-      first = false;
-      firstCBall = "B";
-    }
-    c = this.checkCollide([whiteBall]);
-
-    if (c != "" && first) {
+    if (c != "None") {
       first = false;
       firstCBall = c;
     }
-    c = this.checkCollide([blackBall]);
-
-    if (c != "" && first) {
-      first = false;
-      firstCBall = "K";
-    }
+    this.checkCollide([blackBall]);
 
     this.update();
     this.draw();
@@ -126,8 +112,13 @@ class Ball {
       if (other.id != this.id) {
         let distance = p5.Vector.sub(this.position, other.position);
         let minDistance = (this.size + other.size) / 2;
-        if (distance.mag() < minDistance) {
-          collide = this.type;
+        if (distance.mag() <= minDistance) {
+          if (collide == "None" && other.iAmWhite()) {
+            console.log(
+              "Collision between " + other.type + " and " + this.type
+            );
+            collide = this.type;
+          }
           let distanceVect = p5.Vector.sub(other.position, this.position);
           let distanceCorrection = (minDistance - distance.mag()) / 2.0;
           let d = distanceVect.copy();

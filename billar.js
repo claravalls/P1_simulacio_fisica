@@ -19,6 +19,8 @@ let blackBall;
 
 let aux_whiteBall;
 let aux_blackBall;
+let aux_yelBalls = [];
+let aux_blueBalls = [];
 
 let holes = [];
 
@@ -47,14 +49,14 @@ function draw() {
     isMoving = true;
 
     firstCollide = whiteBall.renderMovement(firstCollide);
-    firstCollide &= blackBall.renderMovement(firstCollide);
+    blackBall.renderMovement(false);
 
     for (i = 0; i < yel_balls.length; i++) {
-      firstCollide &= yel_balls[i].renderMovement(firstCollide);
+      yel_balls[i].renderMovement(false);
     }
 
     for (i = 0; i < blue_balls.length; i++) {
-      firstCollide &= blue_balls[i].renderMovement(firstCollide);
+      blue_balls[i].renderMovement(false);
     }
   } else {
     if (isMoving == true) {
@@ -66,6 +68,7 @@ function draw() {
       }
 
       //Comprovo si ha tocat alguna bola i quina ha tocat primer
+      console.log("firstBall = " + firstCBall);
       if (
         firstCBall == "None" ||
         firstCBall == "K" ||
@@ -73,10 +76,11 @@ function draw() {
       ) {
         console.log(
           "Two turns for player" +
-            otherPlayer.turn +
+            otherPlayer.id +
             " : firstCBall = " +
             firstCBall
         );
+        otherPlayer.doubleTurn();
       }
       firstCBall = "None";
       firstCollide = true;
@@ -101,4 +105,25 @@ function draw() {
 function preload() {
   loadJSON("assets/init.json", gotData);
   loadJSON("assets/players.json", gotDataPlayers);
+}
+
+function reset() {
+  blue_balls = [];
+  yel_balls = [];
+  whiteBall = aux_whiteBall.copy();
+  blackBall = aux_blackBall.copy();
+
+  aux_yelBalls.forEach((ball) => {
+    yel_balls.push(ball.copy());
+  });
+
+  aux_blueBalls.forEach((ball) => {
+    blue_balls.push(ball.copy());
+  });
+
+  background(255, 255, 255);
+  firstCollide = true;
+  firstBall = true;
+  firstCBall = "None";
+  isMoving = false;
 }

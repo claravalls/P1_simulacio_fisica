@@ -56,6 +56,7 @@ function gotData(data) {
         "Y"
       );
       yel_balls.push(b);
+      aux_yelBalls.push(b.copy());
     }
     elements = data[3];
     for (let i = 0; i < elements.length; i++) {
@@ -68,6 +69,7 @@ function gotData(data) {
         "B"
       );
       blue_balls.push(b);
+      aux_blueBalls.push(b.copy());
     }
     json_holes = data[4];
     for (let i = 0; i < json_holes.length; i++) {
@@ -166,12 +168,14 @@ function whiteBallIn() {
 }
 
 function blackBallIn(hole) {
+  stop = true;
   let current_player = player1;
   if (player2.turn > 0) {
     current_player = player2;
   }
   if (current_player.balls > 0) {
     console.log("Player " + current_player.id + " loses");
+    reset();
   } else {
   }
 }
