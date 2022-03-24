@@ -130,6 +130,13 @@ function mouseDragged() {
   showStick = true;
 }
 
+
+function keyPressed(){
+  if (key === "r"){
+    reset();
+  }
+}
+
 function checkWhiteClick() {
   if (
     mouseX > whiteBall.position.x - whiteBall.size &&

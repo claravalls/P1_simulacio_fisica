@@ -3,9 +3,9 @@ class Player {
     this.id = id;
     this.position = createVector(x, y);
     this.balls = 7;
-    this.color = 255; //color(rgb.r, rgb.g, rgb.b);
+    this.color = color(rgb.r, rgb.g, rgb.b);
     this.turn = 0;
-    this.shape = 1;
+    this.shapeFilled = 1;
     this.type = "";
     this.lastHole = 0;
   }
@@ -124,16 +124,17 @@ class Player {
     }
   }
 
-  ballFilled() {
-    this.balls = this.balls - 1;
-    if (this.balls < 0) this.balls = 0;
-  }
-
   showShape() {
-    //noStroke;
+
     let shape_size = 20;
-    fill(this.color);
-    stroke(0);
+    if (this.turn){
+      noStroke;
+      fill(this.color); 
+    } else{ 
+      fill(255);
+      stroke(this.color);
+    }
+    //SHAPE
     ellipse(this.position.x, this.position.y, shape_size, shape_size);
     arc(
       this.position.x,
@@ -143,5 +144,35 @@ class Player {
       PI,
       TWO_PI
     );
+
+    //BALLS TO FILL
+    let seven = 7;
+    let offset = 50;
+    while(seven){
+      fill(255);
+      stroke(this.color);
+      ellipse(this.position.x + offset, this.position.y + shape_size/2, 30, 30);
+      seven = seven - 1;
+      offset = offset + 50;
+    }
+
+    //BALLS FILLED
+    let balls_left = 7 - this.balls;
+
+    offset = 50;
+    while(balls_left){
+      fill(this.color);
+      ellipse(this.position.x + offset, this.position.y + shape_size/2, 30, 30);
+      balls_left = balls_left - 1;
+      offset = offset + 50;
+    }
+  }
+
+
+  winnerPlayer(){
+    console.log('WINNER');
+    textSize(24);
+    fill('green');
+    text('WINNER', this.position.x + 400, this.position.y + 20);
   }
 }
