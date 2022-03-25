@@ -27,6 +27,8 @@ let gameOver;
 
 const PLAYERS_HEIGHT = 150;
 
+let gameOver;
+
 function setup() {
   createCanvas(600, 360 + PLAYERS_HEIGHT);
   preload();
@@ -36,7 +38,11 @@ function setup() {
   firstBall = true;
   firstCBall = "None";
   isMoving = false;
+<<<<<<< HEAD
   gameOver = false;
+=======
+  gameOver = 0;
+>>>>>>> 42e1a2105cf58dded59b22ae41c547569bef65e6
 }
 
 function draw() {
@@ -101,6 +107,10 @@ function draw() {
     for (i = 0; i < blue_balls.length; i++) {
       blue_balls[i].renderStop();
     }
+  }
+
+  if(gameOver){
+    drawGameOverView();
   }
 }
 
