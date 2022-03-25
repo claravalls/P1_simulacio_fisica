@@ -130,6 +130,12 @@ function mouseDragged() {
   showStick = true;
 }
 
+function keyPressed() {
+  if (key == "r" && gameOver) {
+    reset();
+  }
+}
+
 function checkWhiteClick() {
   if (
     mouseX > whiteBall.position.x - whiteBall.size &&
@@ -168,7 +174,7 @@ function whiteBallIn() {
 }
 
 function blackBallIn(hole) {
-  stop = true;
+  gameOver = true;
   let current_player = player1;
   if (player2.turn > 0) {
     current_player = player2;
