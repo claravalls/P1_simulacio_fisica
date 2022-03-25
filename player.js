@@ -49,6 +49,8 @@ class Player {
   }
 
   changeTurn(otherPlayer) {
+    doubleTurn = false;
+
     switch (this.turn) {
       case -1:
         this.turn = 2;

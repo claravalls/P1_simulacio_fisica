@@ -10,6 +10,7 @@ let borders = [];
 let player1;
 let player2;
 let firstCBall;
+let colorToSet;
 let firstCollide;
 let firstBall;
 let isMoving;
@@ -38,8 +39,9 @@ function setup() {
   firstBall = true;
   firstCBall = "None";
   isMoving = false;
-  gameOver = 0;
+  gameOver = false;
   doubleTurn = false;
+  colorToSet = "";
 }
 
 function draw() {
@@ -52,17 +54,16 @@ function draw() {
 
   if (checkBallsMoving()) {
     isMoving = true;
-    doubleTurn = false;
 
-    firstCollide = whiteBall.renderMovement(firstCollide);
-    blackBall.renderMovement(false);
+    whiteBall.render();
+    blackBall.render(false);
 
     for (i = 0; i < yel_balls.length; i++) {
-      yel_balls[i].renderMovement(false);
+      yel_balls[i].render(false);
     }
 
     for (i = 0; i < blue_balls.length; i++) {
-      blue_balls[i].renderMovement(false);
+      blue_balls[i].render(false);
     }
   } else {
     if (isMoving == true) {
@@ -77,11 +78,25 @@ function draw() {
       if (
         firstCBall == "None" ||
         firstCBall == "K" ||
-        firstCBall == otherPlayer.type
+        (firstCBall == otherPlayer.type && colorToSet == "")
       ) {
         console.log("Fault: firstCBall = " + firstCBall);
         otherPlayer.doubleTurn();
       }
+
+      if (!firstBall && colorToSet != "") {
+        if (player1.turn > 0) {
+          let otherColor = player1.setColor(colorToSet);
+          player2.setColor(otherColor);
+          colorToSet = "";
+          firstBall = false;
+        } else {
+          let otherColor = player2.setColor(colorToSet);
+          player1.setColor(otherColor);
+        }
+        colorToSet = "";
+      }
+
       firstCBall = "None";
       firstCollide = true;
 
@@ -90,15 +105,15 @@ function draw() {
       isMoving = false;
     }
 
-    whiteBall.renderStop();
-    blackBall.renderStop();
+    whiteBall.render();
+    blackBall.render();
 
     for (i = 0; i < yel_balls.length; i++) {
-      yel_balls[i].renderStop();
+      yel_balls[i].render();
     }
 
     for (i = 0; i < blue_balls.length; i++) {
-      blue_balls[i].renderStop();
+      blue_balls[i].render();
     }
   }
 
@@ -128,7 +143,7 @@ function reset() {
   yel_balls = [];
   whiteBall = aux_whiteBall.copy();
   blackBall = aux_blackBall.copy();
-  blackBall.color.setAlpha(1);
+  blackBall.color.setAlpha(255);
 
   aux_yelBalls.forEach((ball) => {
     yel_balls.push(ball.copy());

@@ -134,7 +134,7 @@ function mouseDragged() {
 function keyPressed() {
   if (key === "r") {
     if (gameOver) {
-      gameOver = 0;
+      gameOver = false;
       reset();
     }
   }
@@ -193,6 +193,7 @@ function drawGameOverView() {
 }
 
 function blackBallIn(hole) {
+  console.log("Black ball in");
   gameOver = true;
   let current_player = player1;
   if (player2.turn > 0) {
@@ -203,7 +204,7 @@ function blackBallIn(hole) {
     //reset();
   } else {
     if (OPPOSITE_HOLES[current_player.lastHole - 1] == hole) {
-      gameOver = 1;
+      gameOver = true;
       current_player.winnerPlayer();
     }
   }

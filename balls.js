@@ -1,4 +1,4 @@
-const MAX_SPEED = 15;
+const MAX_SPEED = 12;
 const MIN_SPEED = 0.09;
 
 class Ball {
@@ -11,21 +11,21 @@ class Ball {
     this.acceleration = createVector(0, 0);
     this.mass = 1;
     this.size = radius;
-    this.collisionLoss = 0.95;
+    this.collisionLoss = 0.98;
   }
 
   iAmWhite() {
     return this.type == "W";
   }
 
-  renderMovement(first) {
+  render() {
     this.checkCollide(yel_balls);
     this.checkCollide(blue_balls);
 
     let c = this.checkCollide([whiteBall]);
 
-    if (c != "None") {
-      first = false;
+    if (c != "None" && firstCollide) {
+      firstCollide = false;
       firstCBall = c;
     }
     this.checkCollide([blackBall]);
@@ -45,25 +45,6 @@ class Ball {
       }
     }
 
-    this.checkHoles();
-    return first;
-  }
-
-  renderStop() {
-    this.update();
-    this.draw();
-
-    this.checkEdges();
-    this.addFriction(0.2);
-
-    if (this.iAmWhite()) {
-      if (showStick) {
-        this.drawStick();
-      }
-      if (shotWhite) {
-        this.shotWhiteBall();
-      }
-    }
     this.checkHoles();
   }
 
@@ -133,7 +114,7 @@ class Ball {
           this.addForce(otherCurrentVelocity.mult(this.collisionLoss));
 
           other.addForce(otherCurrentVelocity.mult(-1));
-          other.addForce(otherCurrentVelocity.mult(this.collisionLoss));
+          other.addForce(currentVelocity.mult(this.collisionLoss));
         }
       }
     });
@@ -197,14 +178,7 @@ class Ball {
       let minDistance = other.size;
       if (distance.mag() < minDistance) {
         if (firstBall && this.type != "W" && this.type != "K") {
-          if (player1.turn > 0) {
-            let otherColor = player1.setColor(this.type);
-            player2.setColor(otherColor);
-            firstBall = false;
-          } else {
-            let otherColor = player2.setColor(this.type);
-            player1.setColor(otherColor);
-          }
+          colorToSet = this.type;
           firstBall = false;
         }
 
@@ -244,11 +218,6 @@ class Ball {
             blue_balls.splice(index, 1);
 
             color_player.balls--;
-            console.log(
-              color_player.balls +
-                " balls remaining for player " +
-                color_player.id
-            );
 
             if (color_player.balls == 0) {
               color_player.setLastHole(other.id);
@@ -256,7 +225,7 @@ class Ball {
             break;
           case "K":
             blackBallIn(other.id);
-            gameOver = 1;
+            gameOver = true;
             break;
 
           case "W":
