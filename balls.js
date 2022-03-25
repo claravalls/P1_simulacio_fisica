@@ -151,19 +151,23 @@ class Ball {
   drawStick() {
     //palo mejorable
     let stickLength = 200;
-    let whiteStickLength = 30;
+    let whiteStickLength = 70;
 
     push();
+    let direction = createVector(whiteBall.position.x, whiteBall.position.y);
+    let mousePos = createVector(mouseX, mouseY);
+    let angle = direction.angleBetween(mousePos);
+    console.log("ANGLE:",degrees(angle));
     //translate(center.x, center.y);
     //Falta aplicar el angulo para tener el palo pues eso angulado xd
     noStroke();
     fill(color(140, 20, 20));
-    rect(mouseX - stickLength, mouseY - 5, stickLength, 10);
-    fill(color(255, 255, 255));
-    rect(mouseX - whiteStickLength, mouseY - 5, whiteStickLength, 10);
+    rect(mouseX - stickLength, mouseY - 5, stickLength, 8);
+    fill(255);
+    rect(mouseX - whiteStickLength, mouseY - 5, whiteStickLength, 8);
 
     //hint line
-    stroke(255, 255, 255);
+    stroke(255);
     line(this.position.x, this.position.y, mouseX, mouseY);
     pop();
   }
