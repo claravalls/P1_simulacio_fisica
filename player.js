@@ -33,17 +33,14 @@ class Player {
   }
 
   doubleTurn() {
-<<<<<<< HEAD
     if (!doubleTurn) {
       console.log("Two turns for player" + this.id);
       this.turn = -1;
       doubleTurn = true;
     }
-=======
-    if(this.id == 1) showDoubleTurn = 1;    
-    if(this.id == 2) showDoubleTurn = 2;
+    if (this.id == 1) showDoubleTurn = 1;
+    if (this.id == 2) showDoubleTurn = 2;
     this.turn = -1;
->>>>>>> 3616f31d31af9be501517eb30d1739b558106a63
   }
 
   changeTurn(otherPlayer) {
@@ -162,7 +159,6 @@ class Player {
       PI,
       TWO_PI
     );
-
 
     //BALLS TO FILL
     let seven = 7;
