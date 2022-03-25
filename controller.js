@@ -146,7 +146,7 @@ function checkWhiteClick() {
     mouseY > whiteBall.position.y - whiteBall.size &&
     mouseX < whiteBall.position.x + whiteBall.size &&
     mouseY < whiteBall.position.y + whiteBall.size
-  ) {    
+  ) {
     return true;
   } else {
     return false;
@@ -203,7 +203,8 @@ function blackBallIn(hole) {
     //reset();
   } else {
     if (OPPOSITE_HOLES[current_player.lastHole - 1] == hole) {
-      console.log(player1);
+      gameOver = 1;
+      current_player.winnerPlayer();
     }
   }
 }

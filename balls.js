@@ -156,7 +156,7 @@ class Ball {
     let direction = createVector(whiteBall.position.x, whiteBall.position.y);
     let mousePos = createVector(mouseX, mouseY);
     let angle = direction.angleBetween(mousePos);
-    console.log("ANGLE:",degrees(angle));
+
     //translate(center.x, center.y);
     //Falta aplicar el angulo para tener el palo pues eso angulado xd
     noStroke();
@@ -235,7 +235,7 @@ class Ball {
             );
 
             if (color_player.balls == 0) {
-              color_player.lastHole = other.id;
+              color_player.setLastHole(other.id);
             }
             break;
 
@@ -251,7 +251,7 @@ class Ball {
             );
 
             if (color_player.balls == 0) {
-              color_player.lastHole = other.id;
+              color_player.setLastHole(other.id);
             }
             break;
           case "K":

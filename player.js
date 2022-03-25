@@ -8,8 +8,13 @@ class Player {
     this.shapeFilled = 1;
     this.type = "";
     this.lastHole = 0;
+    this.noPenalizations = false;
   }
 
+  setLastHole(holeID) {
+    this.lastHole = holeID;
+    this.noPenalizations = true;
+  }
   setColor(type) {
     this.type = type;
     if (this.type == "Y") {
@@ -33,7 +38,7 @@ class Player {
   }
 
   doubleTurn() {
-    if (!doubleTurn) {
+    if (!doubleTurn & !this.noPenalizations) {
       console.log("Two turns for player" + this.id);
       this.turn = -1;
       doubleTurn = true;
