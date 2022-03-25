@@ -26,6 +26,8 @@ let holes = [];
 
 const PLAYERS_HEIGHT = 150;
 
+let gameOver;
+
 function setup() {
   createCanvas(600, 360 + PLAYERS_HEIGHT);
   preload();
@@ -35,6 +37,7 @@ function setup() {
   firstBall = true;
   firstCBall = "None";
   isMoving = false;
+  gameOver = 0;
 }
 
 function draw() {
@@ -99,6 +102,10 @@ function draw() {
     for (i = 0; i < blue_balls.length; i++) {
       blue_balls[i].renderStop();
     }
+  }
+
+  if(gameOver){
+    drawGameOverView();
   }
 }
 

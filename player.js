@@ -126,7 +126,13 @@ class Player {
 
   showShape() {
 
-    let shape_size = 20;
+    let shape_size = 20;    
+    //TEXT 
+    textSize(16);   
+    fill(0);
+    noStroke();
+    text('P'+this.id, this.position.x - 40, this.position.y + 10);
+
     if (this.turn){
       noStroke;
       fill(this.color); 
@@ -168,9 +174,7 @@ class Player {
     }
   }
 
-
   winnerPlayer(){
-    console.log('WINNER');
     textSize(24);
     fill('green');
     text('WINNER', this.position.x + 400, this.position.y + 20);

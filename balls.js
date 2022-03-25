@@ -254,7 +254,7 @@ class Ball {
           case "K":
             this.color.setAlpha(0);
             blackBallIn(other.id);
-            color_player.winnerPlayer();
+            gameOver = 1;
             break;
 
           case "W":

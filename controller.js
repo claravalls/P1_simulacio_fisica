@@ -103,6 +103,7 @@ function createTable() {
   //background(10, 130, 90);
   fill(117, 217, 117);
   rect(borders[0], borders[1], borders[2] - frame, borders[3] - frame);
+  rect(0, height - PLAYERS_HEIGHT, width, PLAYERS_HEIGHT);
 }
 
 function mousePressed() {
@@ -133,7 +134,11 @@ function mouseDragged() {
 
 function keyPressed(){
   if (key === "r"){
-    reset();
+    if (gameOver){
+      gameOver = 0;
+      blackBall.color.setAlpha(1);
+      reset();
+    }
   }
 }
 
@@ -174,6 +179,17 @@ function whiteBallIn() {
   clear();
 }
 
+function drawGameOverView(){
+  fill(0);
+    rect(150, 150, width/2, height/4);
+    fill("red");
+    textSize(42);
+    text('GAME OVER', width/2-textSize('GAME OVER')*3, 200);
+    fill(255);
+    textSize(24);
+    text('Press R to restart', width/2-textSize('Press R to restart')*4, 250);
+}
+
 function blackBallIn(hole) {
   stop = true;
   let current_player = player1;
@@ -182,7 +198,7 @@ function blackBallIn(hole) {
   }
   if (current_player.balls > 0) {
     console.log("Player " + current_player.id + " loses");
-    reset();
+    //reset();
   } else {
   }
 }
