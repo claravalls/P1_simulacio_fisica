@@ -13,8 +13,10 @@ class Player {
   setColor(type) {
     this.type = type;
     if (this.type == "Y") {
+      this.color = color(255, 213, 0);
       return "B";
     } else {
+      this.color = color(83, 241, 255);
       return "Y";
     }
   }
@@ -26,15 +28,22 @@ class Player {
   }
 
   endTurn() {
+    showDoubleTurn = 0;
     this.turn--;
   }
 
   doubleTurn() {
+<<<<<<< HEAD
     if (!doubleTurn) {
       console.log("Two turns for player" + this.id);
       this.turn = -1;
       doubleTurn = true;
     }
+=======
+    if(this.id == 1) showDoubleTurn = 1;    
+    if(this.id == 2) showDoubleTurn = 2;
+    this.turn = -1;
+>>>>>>> 3616f31d31af9be501517eb30d1739b558106a63
   }
 
   changeTurn(otherPlayer) {
@@ -153,6 +162,7 @@ class Player {
       PI,
       TWO_PI
     );
+
 
     //BALLS TO FILL
     let seven = 7;

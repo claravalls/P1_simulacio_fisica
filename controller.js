@@ -146,7 +146,7 @@ function checkWhiteClick() {
     mouseY > whiteBall.position.y - whiteBall.size &&
     mouseX < whiteBall.position.x + whiteBall.size &&
     mouseY < whiteBall.position.y + whiteBall.size
-  ) {
+  ) {    
     return true;
   } else {
     return false;

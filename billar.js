@@ -25,6 +25,7 @@ let aux_blueBalls = [];
 let holes = [];
 let gameOver;
 let doubleTurn;
+let showDoubleTurn;
 
 const PLAYERS_HEIGHT = 150;
 
@@ -98,6 +99,17 @@ function draw() {
 
     for (i = 0; i < blue_balls.length; i++) {
       blue_balls[i].renderStop();
+    }
+  }
+
+  if (showDoubleTurn) {
+    textSize(24);
+    if (showDoubleTurn == 1) {
+      fill(player1.color);
+      text("double turn", player1.position.x + 385, player1.position.y + 20);
+    } else if (showDoubleTurn == 2) {
+      fill(player2.color);
+      text("double turn", player2.position.x + 385, player2.position.y + 20);
     }
   }
 
