@@ -131,20 +131,12 @@ function mouseDragged() {
   showStick = true;
 }
 
-<<<<<<< HEAD
 function keyPressed() {
-  if (key == "r" && gameOver) {
-    reset();
-=======
-
-function keyPressed(){
-  if (key === "r"){
-    if (gameOver){
+  if (key === "r") {
+    if (gameOver) {
       gameOver = 0;
-      blackBall.color.setAlpha(1);
       reset();
     }
->>>>>>> 42e1a2105cf58dded59b22ae41c547569bef65e6
   }
 }
 
@@ -185,15 +177,19 @@ function whiteBallIn() {
   clear();
 }
 
-function drawGameOverView(){
+function drawGameOverView() {
   fill(0);
-    rect(150, 150, width/2, height/4);
-    fill("red");
-    textSize(42);
-    text('GAME OVER', width/2-textSize('GAME OVER')*3, 200);
-    fill(255);
-    textSize(24);
-    text('Press R to restart', width/2-textSize('Press R to restart')*4, 250);
+  rect(150, 150, width / 2, height / 4);
+  fill("red");
+  textSize(42);
+  text("GAME OVER", width / 2 - textSize("GAME OVER") * 3, 200);
+  fill(255);
+  textSize(24);
+  text(
+    "Press R to restart",
+    width / 2 - textSize("Press R to restart") * 4,
+    250
+  );
 }
 
 function blackBallIn(hole) {
@@ -206,5 +202,8 @@ function blackBallIn(hole) {
     console.log("Player " + current_player.id + " loses");
     //reset();
   } else {
+    if (OPPOSITE_HOLES[current_player.lastHole - 1] == hole) {
+      console.log(player1);
+    }
   }
 }

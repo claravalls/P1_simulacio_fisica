@@ -24,10 +24,9 @@ let aux_blueBalls = [];
 
 let holes = [];
 let gameOver;
+let doubleTurn;
 
 const PLAYERS_HEIGHT = 150;
-
-let gameOver;
 
 function setup() {
   createCanvas(600, 360 + PLAYERS_HEIGHT);
@@ -38,11 +37,8 @@ function setup() {
   firstBall = true;
   firstCBall = "None";
   isMoving = false;
-<<<<<<< HEAD
-  gameOver = false;
-=======
   gameOver = 0;
->>>>>>> 42e1a2105cf58dded59b22ae41c547569bef65e6
+  doubleTurn = false;
 }
 
 function draw() {
@@ -55,6 +51,7 @@ function draw() {
 
   if (checkBallsMoving()) {
     isMoving = true;
+    doubleTurn = false;
 
     firstCollide = whiteBall.renderMovement(firstCollide);
     blackBall.renderMovement(false);
@@ -76,24 +73,19 @@ function draw() {
       }
 
       //Comprovo si ha tocat alguna bola i quina ha tocat primer
-      console.log("firstBall = " + firstCBall);
       if (
         firstCBall == "None" ||
         firstCBall == "K" ||
         firstCBall == otherPlayer.type
       ) {
-        console.log(
-          "Two turns for player" +
-            otherPlayer.id +
-            " : firstCBall = " +
-            firstCBall
-        );
+        console.log("Fault: firstCBall = " + firstCBall);
         otherPlayer.doubleTurn();
       }
       firstCBall = "None";
       firstCollide = true;
 
       player1.changeTurn(player2);
+
       isMoving = false;
     }
 
@@ -109,7 +101,7 @@ function draw() {
     }
   }
 
-  if(gameOver){
+  if (gameOver) {
     drawGameOverView();
   }
 }
@@ -124,6 +116,7 @@ function reset() {
   yel_balls = [];
   whiteBall = aux_whiteBall.copy();
   blackBall = aux_blackBall.copy();
+  blackBall.color.setAlpha(1);
 
   aux_yelBalls.forEach((ball) => {
     yel_balls.push(ball.copy());

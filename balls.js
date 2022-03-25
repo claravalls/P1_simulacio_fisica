@@ -53,6 +53,7 @@ class Ball {
     this.update();
     this.draw();
 
+    this.checkEdges();
     this.addFriction(0.2);
 
     if (this.iAmWhite()) {
@@ -63,6 +64,7 @@ class Ball {
         this.shotWhiteBall();
       }
     }
+    this.checkHoles();
   }
 
   draw() {
@@ -114,9 +116,6 @@ class Ball {
         let minDistance = (this.size + other.size) / 2;
         if (distance.mag() <= minDistance) {
           if (collide == "None" && other.iAmWhite()) {
-            console.log(
-              "Collision between " + other.type + " and " + this.type
-            );
             collide = this.type;
           }
           let distanceVect = p5.Vector.sub(other.position, this.position);
@@ -252,7 +251,6 @@ class Ball {
             }
             break;
           case "K":
-            this.color.setAlpha(0);
             blackBallIn(other.id);
             gameOver = 1;
             break;
