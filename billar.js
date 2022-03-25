@@ -23,6 +23,7 @@ let aux_yelBalls = [];
 let aux_blueBalls = [];
 
 let holes = [];
+let gameOver;
 
 const PLAYERS_HEIGHT = 150;
 
@@ -38,7 +39,11 @@ function setup() {
   firstBall = true;
   firstCBall = "None";
   isMoving = false;
+<<<<<<< HEAD
+  gameOver = false;
+=======
   gameOver = 0;
+>>>>>>> 42e1a2105cf58dded59b22ae41c547569bef65e6
 }
 
 function draw() {
@@ -144,5 +149,6 @@ function reset() {
   firstCollide = true;
   firstBall = true;
   firstCBall = "None";
+  gameOver = false;
   isMoving = false;
 }

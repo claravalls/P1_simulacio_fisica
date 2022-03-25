@@ -131,6 +131,11 @@ function mouseDragged() {
   showStick = true;
 }
 
+<<<<<<< HEAD
+function keyPressed() {
+  if (key == "r" && gameOver) {
+    reset();
+=======
 
 function keyPressed(){
   if (key === "r"){
@@ -139,6 +144,7 @@ function keyPressed(){
       blackBall.color.setAlpha(1);
       reset();
     }
+>>>>>>> 42e1a2105cf58dded59b22ae41c547569bef65e6
   }
 }
 
@@ -191,7 +197,7 @@ function drawGameOverView(){
 }
 
 function blackBallIn(hole) {
-  stop = true;
+  gameOver = true;
   let current_player = player1;
   if (player2.turn > 0) {
     current_player = player2;
