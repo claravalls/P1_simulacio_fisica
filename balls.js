@@ -1,4 +1,4 @@
-const MAX_SPEED = 12;
+const MAX_SPEED = 15;
 const MIN_SPEED = 0.098;
 
 class Ball {
@@ -19,10 +19,17 @@ class Ball {
   }
 
   render() {
-    this.checkCollide(yel_balls);
-    this.checkCollide(blue_balls);
-    this.checkCollide([whiteBall]);
-    this.checkCollide([blackBall]);
+    let list = [];
+    list.push(blue_balls);
+
+    if (this.type == "W") {
+      list.push(yel_balls);
+      list.push([blackBall]);
+    } else if (this.type != "B") {
+      list.push(yel_balls);
+    }
+
+    this.checkCollide(list);
 
     this.update();
     this.draw();
@@ -83,22 +90,31 @@ class Ball {
     }
   }
 
-  checkCollide(balls) {
-    balls.forEach((other) => {
-      if (other.id != this.id) {
-        let distance = p5.Vector.sub(this.position, other.position);
-        let minDistance = (this.size + other.size) / 2;
-        if (distance.mag() <= minDistance) {
-          if (
-            firstCBall == "None" &&
-            (other.iAmWhite() || this.iAmWhite()) &&
-            isMoving
-          ) {
-            console.log(
-              "Collision between " + other.type + " and " + this.type
-            );
-            firstCBall = this.iAmWhite() ? other.type : this.type;
-          }
+  checkCollide(list) {
+    list.forEach((balls) => {
+      balls.forEach((other) => {
+        if (other.id >= this.id) {
+          let distance = p5.Vector.sub(this.position, other.position);
+          //let minDistance = (this.size + other.size) / 2;
+          let minDistance = dist(
+            this.position.x,
+            this.position.y,
+            other.position.x,
+            other.position.y
+          );
+          if (minDistance <= this.size) {
+            if (
+              firstCBall == "None" &&
+              (other.iAmWhite() || this.iAmWhite()) &&
+              isMoving
+            ) {
+              console.log(
+                "Collision between " + other.type + " and " + this.type
+              );
+              firstCBall = this.iAmWhite() ? other.type : this.type;
+            }
+            this.checkCollision(this, other); //quitar esto
+            /* DESCOMENTAR ESTO
           let distanceVect = p5.Vector.sub(other.position, this.position);
           let distanceCorrection = (minDistance - distance.mag()) / 2.0;
           let d = distanceVect.copy();
@@ -115,9 +131,60 @@ class Ball {
 
           other.addForce(otherCurrentVelocity.mult(-1));
           other.addForce(currentVelocity.mult(this.collisionLoss));
+          */
+          }
         }
-      }
+      });
     });
+  }
+
+  //eliminar funcion
+  checkCollision(particle1, particle2) {
+    let distVec = particle2.position.copy().sub(particle1.position);
+
+    // calculate the angle
+    let angle = Math.atan2(distVec.y, distVec.x);
+
+    let mat = Ball.createRotationMatrixFromAngle(angle);
+    let inverseRotation = Ball.transposeMatrix2x2(mat);
+
+    // rotate the velocities of the particles so that the collision
+    // happens on a single axis (x-axis) rather than 2 axes
+    let vel1 = Ball.matrix2x2MultiplyVector2(mat, particle1.velocity.copy());
+    let vel2 = Ball.matrix2x2MultiplyVector2(mat, particle2.velocity.copy());
+
+    // collision reacton
+    let vxTotal = vel1.x - vel2.x;
+
+    vel1.x = Ball.collisionReboundSingleAxis(particle1, particle2, vel1, vel2);
+    vel2.x = vxTotal + vel1.x;
+
+    // particles often get stuck if they are going the same direction
+    // a dot product greater than zero means they are going the same direction
+    // reversing the velocity of one of the particles helps to keep them from getting stuck
+    if (vel1.dot(vel2) > 0) vel1.x *= -1;
+
+    // position adjustment
+    let particle1Adjustment = Ball.matrix2x2MultiplyVector2(
+      inverseRotation,
+      createVector(0, 0)
+    );
+    particle1.position = particle1.position.copy().add(particle1Adjustment);
+    particle2.position = particle1.position.copy().add(distVec);
+
+    // rotate velocity back
+    let reboundVelocity1 = Ball.matrix2x2MultiplyVector2(inverseRotation, vel1);
+    let reboundVelocity2 = Ball.matrix2x2MultiplyVector2(inverseRotation, vel2);
+
+    if (reboundVelocity1.mag() > MAX_SPEED) {
+      reboundVelocity1.setMag(MAX_SPEED);
+    }
+
+    if (reboundVelocity2.mag() > MAX_SPEED) {
+      reboundVelocity2.setMag(MAX_SPEED);
+    }
+    particle1.velocity = reboundVelocity1;
+    particle2.velocity = reboundVelocity2;
   }
 
   addFriction(c) {
@@ -243,5 +310,28 @@ class Ball {
         }
       }
     });
+  }
+
+  //eliminar todas las funciones static de aquí abajo
+  static createRotationMatrixFromAngle(theta) {
+    let c = Math.cos(theta);
+    let s = Math.sin(theta);
+    return [c, s, -s, c];
+  }
+
+  static matrix2x2MultiplyVector2(matrix, vector) {
+    let MatrixRow1Vec = createVector(matrix[0], matrix[1]);
+    let MatrixRow2Vec = createVector(matrix[2], matrix[3]);
+
+    return createVector(vector.dot(MatrixRow1Vec), vector.dot(MatrixRow2Vec));
+  }
+
+  static transposeMatrix2x2(matrix) {
+    return [matrix[0], matrix[2], matrix[1], matrix[3]];
+  }
+
+  static collisionReboundSingleAxis(particle1, particle2) {
+    let collisionForce = particle2.velocity.x;
+    return collisionForce;
   }
 }
