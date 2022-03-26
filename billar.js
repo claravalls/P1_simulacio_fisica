@@ -23,6 +23,7 @@ let aux_blueBalls = [];
 
 let holes = [];
 let gameOver;
+let gameOverReason;
 let doubleTurn;
 let showDoubleTurn;
 
@@ -96,20 +97,22 @@ async function draw() {
   }
   */
 
-  if (showDoubleTurn) {
-    textSize(24);
-    if (showDoubleTurn == 1) {
-      fill(player1.color);
-      text("double turn", player1.position.x + 385, player1.position.y + 20);
-    } else if (showDoubleTurn == 2) {
-      fill(player2.color);
-      text("double turn", player2.position.x + 385, player2.position.y + 20);
+  if (gameOver) {
+    drawGameOverView(gameOverReason);
+  }else{
+    if (showDoubleTurn) {
+      textSize(24);
+      if (showDoubleTurn == 1) {
+        fill(player1.color);
+        text("double turn", player1.position.x + 385, player1.position.y + 20);
+      } else if (showDoubleTurn == 2) {
+        fill(player2.color);
+        text("double turn", player2.position.x + 385, player2.position.y + 20);
+      }
     }
   }
 
-  if (gameOver) {
-    drawGameOverView();
-  }
+  
 }
 
 async function preload() {

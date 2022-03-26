@@ -200,9 +200,4 @@ class Player {
     }
   }
 
-  winnerPlayer() {
-    textSize(24);
-    fill("green");
-    text("WINNER", this.position.x + 400, this.position.y + 20);
-  }
 }

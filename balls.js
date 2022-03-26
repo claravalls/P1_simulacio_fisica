@@ -1,6 +1,8 @@
 const MAX_SPEED = 12;
 const MIN_SPEED = 0.098;
 
+const MAX_STICK=250;
+
 class Ball {
   constructor(x, y, color, radius, type) {
     this.id = index++;
@@ -128,27 +130,30 @@ class Ball {
   }
 
   drawStick() {
-    //palo mejorable
-    let stickLength = 200;
-    let whiteStickLength = 70;
-
     push();
-    let direction = createVector(whiteBall.position.x, whiteBall.position.y);
-    let mousePos = createVector(mouseX, mouseY);
-    let angle = direction.angleBetween(mousePos);
+      let begin = new p5.Vector();
+      begin = whiteBall.position.copy();
 
-    //translate(center.x, center.y);
-    //Falta aplicar el angulo para tener el palo pues eso angulado xd
-    noStroke();
-    fill(color(140, 20, 20));
-    rect(mouseX - stickLength, mouseY - 5, stickLength, 8);
-    fill(255);
-    rect(mouseX - whiteStickLength, mouseY - 5, whiteStickLength, 8);
+      let mousePos = createVector(mouseX, mouseY);
+      let vx = (begin.x - mousePos.x);
+      let vy = (begin.y - mousePos.y);
+      let direction = createVector(vx, vy);
 
-    //hint line
-    stroke(255);
-    line(this.position.x, this.position.y, mouseX, mouseY);
-    pop();
+      if (direction.mag() > MAX_STICK) {
+        direction.setMag(MAX_STICK);
+      }
+
+      //HINT LINE
+      strokeWeight(1);
+      stroke(255);    
+      line(begin.x, begin.y, begin.x + direction.x, begin.y + direction.y);
+
+      //STICK      
+      strokeWeight(15);
+      stroke(color(140, 20, 20));
+      line(mouseX, mouseY, begin.x - direction.x/5, begin.y - direction.y/5);
+
+      pop();
   }
 
   shotWhiteBall() {

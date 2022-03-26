@@ -178,19 +178,26 @@ function whiteBallIn() {
   clear();
 }
 
-function drawGameOverView() {
+function drawGameOverView(gameOverReason) {
+  textAlign(CENTER);
   fill(0);
-  rect(150, 150, width / 2, height / 4);
+  rect(width/4, height/4, width / 2, height / 3);
   fill("red");
+  //We have a winner?
+  if (gameOverReason[3] == 'i'){
+    fill("green")
+  }  
   textSize(42);
-  text("GAME OVER", width / 2 - textSize("GAME OVER") * 3, 200);
+  text("GAME OVER", width / 2, 180);
   fill(255);
   textSize(24);
-  text(
-    "Press R to restart",
-    width / 2 - textSize("Press R to restart") * 4,
-    250
-  );
+  if (gameOverReason){
+    text(gameOverReason,width / 2, 230);
+    text("Press R to restart",width / 2, 280);
+  } else{
+    text("Press R to restart",width / 2, 250);
+  }
+  
 }
 
 function blackBallIn(hole) {
@@ -204,12 +211,15 @@ function blackBallIn(hole) {
   }
   if (current_player.balls > 0) {
     console.log("Player " + current_player.id + " loses");
+    gameOverReason = "P"+current_player.id+" lose. Black ball filled";
     otherPlayer.winnerPlayer();
     //reset();
   } else {
     if (OPPOSITE_HOLES[current_player.lastHole - 1] == hole) {
+      gameOverReason = "P"+current_player.id+" is the winner!";
       current_player.winnerPlayer();
     } else {
+      gameOverReason = "P"+current_player.id+" is the winner!";
       otherPlayer.winnerPlayer();
     }
   }
