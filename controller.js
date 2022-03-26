@@ -225,6 +225,7 @@ async function manageTurns() {
       let moving = checkBallsMoving();
       if (moving) {
         console.log("not");
+        reallyChecked = false;
         return;
       }
       isMoving = false;
