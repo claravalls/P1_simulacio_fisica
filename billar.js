@@ -49,17 +49,52 @@ async function draw() {
   }
 
   whiteBall.render();
-  blackBall.render();
+  blackBall.render(false);
 
   for (i = 0; i < yel_balls.length; i++) {
-    yel_balls[i].render();
+    yel_balls[i].render(false);
   }
 
   for (i = 0; i < blue_balls.length; i++) {
-    blue_balls[i].render();
+    blue_balls[i].render(false);
   }
 
   await manageTurns();
+
+  /*
+  let moving = await checkBallsMoving();
+  if (moving) {
+    isMoving = true;
+    //await delayTime(2000);
+    console.log("Moving");
+  } else {
+    if (isMoving) {
+      console.log("Stopped");
+      isMoving = false;
+
+      let otherPlayer;
+      if (player2.turn != 0) {
+        otherPlayer = player1;
+      } else {
+        otherPlayer = player2;
+      }
+
+      //Comprovo si ha tocat alguna bola i quina ha tocat primer
+      if (
+        firstCBall == "None" ||
+        firstCBall == "K" ||
+        firstCBall == otherPlayer.type
+      ) {
+        console.log("Fault: firstCBall = " + firstCBall);
+        otherPlayer.doubleTurn();
+      }
+
+      firstCBall = "None";
+      player1.changeTurn(player2);
+    }
+    
+  }
+  */
 
   if (showDoubleTurn) {
     textSize(24);
