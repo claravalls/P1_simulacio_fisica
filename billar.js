@@ -135,6 +135,7 @@ function reset() {
   background(255, 255, 255);
   firstBall = true;
   firstCBall = "None";
-  gameOver = false;
   isMoving = false;
+  gameOver = false;
+  doubleTurn = false;
 }

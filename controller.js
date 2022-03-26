@@ -197,16 +197,20 @@ function blackBallIn(hole) {
   console.log("Black ball in");
   gameOver = true;
   let current_player = player1;
+  let otherPlayer = player2;
   if (player2.turn > 0) {
     current_player = player2;
+    otherPlayer = player1;
   }
   if (current_player.balls > 0) {
     console.log("Player " + current_player.id + " loses");
+    otherPlayer.winnerPlayer();
     //reset();
   } else {
     if (OPPOSITE_HOLES[current_player.lastHole - 1] == hole) {
-      gameOver = true;
       current_player.winnerPlayer();
+    } else {
+      otherPlayer.winnerPlayer();
     }
   }
 }
