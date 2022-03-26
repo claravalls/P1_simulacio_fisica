@@ -45,10 +45,10 @@ class Player {
     }
     if (this.id == 1) showDoubleTurn = 1;
     if (this.id == 2) showDoubleTurn = 2;
-    this.turn = -1;
   }
 
   changeTurn(otherPlayer) {
+    while (checkBallsMoving()) {}
     doubleTurn = false;
 
     switch (this.turn) {

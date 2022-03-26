@@ -1,5 +1,5 @@
 const MAX_SPEED = 12;
-const MIN_SPEED = 0.09;
+const MIN_SPEED = 0.098;
 
 class Ball {
   constructor(x, y, color, radius, type) {
@@ -21,13 +21,7 @@ class Ball {
   render() {
     this.checkCollide(yel_balls);
     this.checkCollide(blue_balls);
-
-    let c = this.checkCollide([whiteBall]);
-
-    if (c != "None" && firstCollide) {
-      firstCollide = false;
-      firstCBall = c;
-    }
+    this.checkCollide([whiteBall]);
     this.checkCollide([blackBall]);
 
     this.update();
@@ -90,14 +84,20 @@ class Ball {
   }
 
   checkCollide(balls) {
-    let collide = "None";
     balls.forEach((other) => {
       if (other.id != this.id) {
         let distance = p5.Vector.sub(this.position, other.position);
         let minDistance = (this.size + other.size) / 2;
         if (distance.mag() <= minDistance) {
-          if (collide == "None" && other.iAmWhite()) {
-            collide = this.type;
+          if (
+            firstCBall == "None" &&
+            (other.iAmWhite() || this.iAmWhite()) &&
+            isMoving
+          ) {
+            console.log(
+              "Collision between " + other.type + " and " + this.type
+            );
+            firstCBall = this.iAmWhite() ? other.type : this.type;
           }
           let distanceVect = p5.Vector.sub(other.position, this.position);
           let distanceCorrection = (minDistance - distance.mag()) / 2.0;
@@ -118,7 +118,6 @@ class Ball {
         }
       }
     });
-    return collide;
   }
 
   addFriction(c) {
@@ -178,7 +177,14 @@ class Ball {
       let minDistance = other.size;
       if (distance.mag() < minDistance) {
         if (firstBall && this.type != "W" && this.type != "K") {
-          colorToSet = this.type;
+          if (player1.turn > 0) {
+            let otherColor = player1.setColor(this.type);
+            player2.setColor(otherColor);
+            firstBall = false;
+          } else {
+            let otherColor = player2.setColor(this.type);
+            player1.setColor(otherColor);
+          }
           firstBall = false;
         }
 
@@ -224,6 +230,7 @@ class Ball {
             }
             break;
           case "K":
+            this.color.setAlpha(0);
             blackBallIn(other.id);
             gameOver = true;
             break;

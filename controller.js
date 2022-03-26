@@ -3,6 +3,7 @@ let ystart;
 
 let showStick;
 let shotWhite;
+let reallyChecked = false;
 
 class Line {
   constructor() {
@@ -107,19 +108,17 @@ function createTable() {
 }
 
 function mousePressed() {
-  if (!checkBallsMoving()) {
-    shotWhite = false;
-    xStart = mouseX;
-    yStart = mouseY;
+  shotWhite = false;
+  xStart = mouseX;
+  yStart = mouseY;
 
-    if (checkWhiteClick()) {
-      showStick = true;
-    } else {
-      showStick = false;
-    }
-
-    lastMousePressed = false;
+  if (checkWhiteClick()) {
+    showStick = true;
+  } else {
+    showStick = false;
   }
+
+  lastMousePressed = false;
 }
 
 function mouseReleased() {
@@ -155,16 +154,18 @@ function checkWhiteClick() {
 
 function checkBallsMoving() {
   yel_balls.forEach((ball) => {
-    if (ball.velocity.mag() != 0) {
+    if (ball.velocity.mag() > 0.0) {
+      console.log();
       return true;
     }
   });
   blue_balls.forEach((ball) => {
-    if (ball.velocity.mag() != 0) {
+    if (ball.velocity.mag() > 0.0) {
+      console.log();
       return true;
     }
   });
-  if (whiteBall.velocity.mag() != 0 || blackBall.velocity.mag() != 0) {
+  if (whiteBall.velocity.mag() > 0.0 || blackBall.velocity.mag() > 0.0) {
     return true;
   }
   return false;
@@ -208,4 +209,52 @@ function blackBallIn(hole) {
       current_player.winnerPlayer();
     }
   }
+}
+
+async function manageTurns() {
+  let moving = checkBallsMoving();
+  if (moving) {
+    isMoving = true;
+    //await delayTime(2000);
+    console.log("Moving");
+  } else {
+    if (isMoving && !reallyChecked) {
+      reallyChecked = true;
+      console.log("Really?");
+      await sleep(1000);
+      let moving = checkBallsMoving();
+      if (moving) {
+        console.log("not");
+        return;
+      }
+      isMoving = false;
+
+      let otherPlayer;
+      if (player2.turn != 0) {
+        otherPlayer = player1;
+      } else {
+        otherPlayer = player2;
+      }
+
+      //Comprovo si ha tocat alguna bola i quina ha tocat primer
+      if (
+        firstCBall == "None" ||
+        firstCBall == "K" ||
+        firstCBall == otherPlayer.type
+      ) {
+        console.log("Fault: firstCBall = " + firstCBall);
+        otherPlayer.doubleTurn();
+      }
+
+      firstCBall = "None";
+      player1.changeTurn(player2);
+      reallyChecked = false;
+    }
+  }
+}
+
+function sleep(millisecondsDuration) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, millisecondsDuration);
+  });
 }

@@ -10,8 +10,6 @@ let borders = [];
 let player1;
 let player2;
 let firstCBall;
-let colorToSet;
-let firstCollide;
 let firstBall;
 let isMoving;
 
@@ -35,16 +33,14 @@ function setup() {
   preload();
   background(255, 255, 255);
   borders.push(frame, frame, width - frame, height - frame - PLAYERS_HEIGHT);
-  firstCollide = true;
   firstBall = true;
   firstCBall = "None";
   isMoving = false;
   gameOver = false;
   doubleTurn = false;
-  colorToSet = "";
 }
 
-function draw() {
+async function draw() {
   createTable();
   showPlayers();
 
@@ -52,21 +48,30 @@ function draw() {
     holes[i].render();
   }
 
-  if (checkBallsMoving()) {
+  whiteBall.render();
+  blackBall.render(false);
+
+  for (i = 0; i < yel_balls.length; i++) {
+    yel_balls[i].render(false);
+  }
+
+  for (i = 0; i < blue_balls.length; i++) {
+    blue_balls[i].render(false);
+  }
+
+  await manageTurns();
+
+  /*
+  let moving = await checkBallsMoving();
+  if (moving) {
     isMoving = true;
-
-    whiteBall.render();
-    blackBall.render(false);
-
-    for (i = 0; i < yel_balls.length; i++) {
-      yel_balls[i].render(false);
-    }
-
-    for (i = 0; i < blue_balls.length; i++) {
-      blue_balls[i].render(false);
-    }
+    //await delayTime(2000);
+    console.log("Moving");
   } else {
-    if (isMoving == true) {
+    if (isMoving) {
+      console.log("Stopped");
+      isMoving = false;
+
       let otherPlayer;
       if (player2.turn != 0) {
         otherPlayer = player1;
@@ -78,44 +83,18 @@ function draw() {
       if (
         firstCBall == "None" ||
         firstCBall == "K" ||
-        (firstCBall == otherPlayer.type && colorToSet == "")
+        firstCBall == otherPlayer.type
       ) {
         console.log("Fault: firstCBall = " + firstCBall);
         otherPlayer.doubleTurn();
       }
 
-      if (!firstBall && colorToSet != "") {
-        if (player1.turn > 0) {
-          let otherColor = player1.setColor(colorToSet);
-          player2.setColor(otherColor);
-          colorToSet = "";
-          firstBall = false;
-        } else {
-          let otherColor = player2.setColor(colorToSet);
-          player1.setColor(otherColor);
-        }
-        colorToSet = "";
-      }
-
       firstCBall = "None";
-      firstCollide = true;
-
       player1.changeTurn(player2);
-
-      isMoving = false;
     }
-
-    whiteBall.render();
-    blackBall.render();
-
-    for (i = 0; i < yel_balls.length; i++) {
-      yel_balls[i].render();
-    }
-
-    for (i = 0; i < blue_balls.length; i++) {
-      blue_balls[i].render();
-    }
+    
   }
+  */
 
   if (showDoubleTurn) {
     textSize(24);
@@ -133,9 +112,9 @@ function draw() {
   }
 }
 
-function preload() {
-  loadJSON("assets/init.json", gotData);
-  loadJSON("assets/players.json", gotDataPlayers);
+async function preload() {
+  await loadJSON("assets/init.json", gotData);
+  await loadJSON("assets/players.json", gotDataPlayers);
 }
 
 function reset() {
@@ -154,7 +133,6 @@ function reset() {
   });
 
   background(255, 255, 255);
-  firstCollide = true;
   firstBall = true;
   firstCBall = "None";
   gameOver = false;
