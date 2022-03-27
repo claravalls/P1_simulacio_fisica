@@ -12,7 +12,6 @@ let player2;
 let firstCBall;
 let firstBall;
 let isMoving;
-let firstShot;
 
 let whiteBall;
 let blackBall;
@@ -40,7 +39,6 @@ function setup() {
   isMoving = false;
   gameOver = false;
   doubleTurn = false;
-  firstShot = 1;
 }
 
 async function draw() {
