@@ -236,6 +236,7 @@ async function manageTurns() {
       reallyChecked = true;
       console.log("Really?");
       await sleep(1000);
+      if(firstShot) firstShot = 0;
       let moving = checkBallsMoving();
       if (moving) {
         console.log("not");
